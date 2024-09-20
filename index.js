@@ -6,13 +6,18 @@ const cors = require('cors');
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
+const pool = mysql.createPool({
   host: process.env.DB_HOST, 
   user: process.env.DB_USERNAME, 
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DBNAME,
 
 })
+pool.getConnection((err, conn) => {
+  if(err) console.log(err)
+  console.log("Connected successfully")
+})
+const db = pool.promise();
 app.get('/student',(req,res) =>{
     db.query("SELECT * FROM react",(err,result) =>{
     if(err){
