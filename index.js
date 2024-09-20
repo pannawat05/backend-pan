@@ -7,35 +7,12 @@ app.use(cors());
 app.use(express.json());
 
 const db = mysql.createConnection({
-   user:"wujb5jkqymflgzw3",
-   host:"ko86t9azcob3a2f9.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-   password:"	brfkoqfogih7692a",
-   database:"	qj345jrsvrrnom89"
+   user:"uvmeyd533gimydyy",
+   host:"b73gdo6gxqwun1svbpc6-mysql.services.clever-cloud.com",
+   password:"	eYJPLDsBaS7HD6F8p9Y9",
+   database:"	b73gdo6gxqwun1svbpc6"
 
 })
-let connection;
-
-function handleDisconnect() {
-  connection = mysql.createConnection(dbConfig);
-
-  connection.connect(function(err) {
-    if (err) {
-      console.log('Error connecting to MySQL, retrying in 2 seconds...', err);
-      setTimeout(handleDisconnect, 2000);  // Retry connection after 2 seconds
-    }
-  });
-
-  connection.on('error', function(err) {
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      console.log('Connection lost, reconnecting...');
-      handleDisconnect();
-    } else {
-      throw err;
-    }
-  });
-}
-
-handleDisconnect();
 app.get('/student',(req,res) =>{
     db.query("SELECT * FROM react",(err,result) =>{
     if(err){
