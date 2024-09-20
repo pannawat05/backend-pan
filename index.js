@@ -13,7 +13,29 @@ const db = mysql.createConnection({
    database:"	qj345jrsvrrnom89"
 
 })
+let connection;
 
+function handleDisconnect() {
+  connection = mysql.createConnection(dbConfig);
+
+  connection.connect(function(err) {
+    if (err) {
+      console.log('Error connecting to MySQL, retrying in 2 seconds...', err);
+      setTimeout(handleDisconnect, 2000);  // Retry connection after 2 seconds
+    }
+  });
+
+  connection.on('error', function(err) {
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      console.log('Connection lost, reconnecting...');
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
 app.get('/student',(req,res) =>{
     db.query("SELECT * FROM react",(err,result) =>{
     if(err){
